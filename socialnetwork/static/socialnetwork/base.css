@@ -1,0 +1,193 @@
+#id_header_div {
+    width:100vw;
+    color : white;
+    
+}
+
+.comment{
+    margin-left:30px;
+
+}
+
+b {
+    font-weight: bold;
+    color : red;
+}
+
+.show-form{
+    display:inline;
+}
+
+.big_heading{
+    font-size: xx-large;
+    text-align: bold;
+    color: white;
+    background-color:rgb(21, 180, 205);
+
+}
+
+#id_page_name{
+    font-size: xx-large;
+    font-weight: bold;
+    font-family: sans-serif;
+    text-align: center;
+    padding: 25px 50px;
+}
+
+#id_nav_profile{
+    font-size:14px;
+}
+
+#id_nav_logout{
+    font-size:14px;
+}
+
+#id_nav_follower_stream{
+    font-size:14px;
+}
+
+#id_nav_global_stream{
+    font-size:14px;
+}
+
+
+#id_login_button{
+    text-align: center;
+}
+
+.text-center{
+    text-align:center;
+}
+#id_site_name{
+    font-size: xx-large;
+    font-weight: bold;
+    font-family: sans-serif;
+    text-align: left;
+    padding: 25px 50px;
+    color : white;
+}
+
+.wrapper {
+    text-align: right;
+}
+
+.user-info {
+    text-align: right;
+    font-family: sans-serif; 
+    padding-right: 10px;
+    font-size: x-large;
+}
+
+.message {
+    color:blue;
+    text-align: center;
+    font-weight: bold;
+    font-size: x-large;
+    font-family: sans-serif;
+    padding: 25px 50px;
+}
+
+.search-bar {
+    text-align: center;
+    padding: 25px 50px;
+}
+
+.content {
+    margin-left: auto;
+    margin-right: auto;
+    width: 70%;
+    font-family: sans-serif;
+    font-size: x-large;
+    padding: 25px 50px;
+}
+
+.errorlist {
+    color:red;
+}
+
+
+.profileList{
+    position: relative;
+    left: 150px;
+}
+.right {
+    text-align: right;
+    float: right;
+}
+.list {
+    padding: 3px;
+}
+
+.list-link {
+    padding: 5px;
+}
+
+.list-link:hover {
+     background-color:lightgray;
+}
+
+th {
+    font-weight: normal;
+    text-align: left;
+}
+
+a {
+     text-decoration: none;
+     color:black;
+     text-align : right;
+     font-size: 18px;
+}
+
+a:link {
+    color: green;
+    background-color: transparent;
+    text-decoration: none;
+  }
+
+#id_register_link{
+    text-decoration: none;
+    color:white;
+    text-align : right;
+    font-size : 14px;
+}
+
+#id_login_link{
+    text-decoration: none;
+    color:white;
+    text-align : right;
+    font-size:15px;
+}
+
+button {
+    font-size: x-large;
+    padding: 3px;
+}
+
+input {
+    font-size: x-large;
+}
+
+div, form {
+    padding: 4px;
+}
+
+
+.navlink {
+    background-color: lightgray;
+}
+
+.letter {
+    padding: 3px;
+    font-family: sans-serif;
+    font-size: x-large;
+
+}
+
+.letter:hover {
+     background-color:lightgray;
+}
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+}
