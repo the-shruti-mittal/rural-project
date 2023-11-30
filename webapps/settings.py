@@ -10,6 +10,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+
+
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -22,8 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-dmqv6a)x+hr!*kjo()9hm4mnzh9mlm&=b^8o9#n+bt9_tw9l=d'
 
+CSRF_USE_SESSIONS = False  # Default: False - Store CSRF token in Session as opposed to in cookie
+CSRF_COOKIE_HTTPONLY = False  # Default: False - True = client JavaScript cannot access the cookie
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['10.0.0.51', '127.0.0.1']
 

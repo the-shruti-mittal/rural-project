@@ -7,9 +7,12 @@ from django.contrib.auth.models import User
 from django.urls import reverse
 from django.http import HttpResponse, Http404
 from django.utils import timezone
+from django.core.serializers import serialize
+from django.utils.decorators import method_decorator
 from django.utils import formats
+from django.http import JsonResponse
 from datetime import datetime
-from socialnetwork.models import Post, Profile, Comment, RequestData
+from socialnetwork.models import Post, Profile, Comment, RequestData, InventoryItem
 from socialnetwork.MyMemoryList import MyMemoryList
 import string
 from django.core.exceptions import ObjectDoesNotExist
@@ -44,6 +47,12 @@ def login_action(request):
     return redirect(reverse('globalstream'))
 
 
+def get_inventory_item_by_id(request, id):
+    item = get_object_or_404(InventoryItem, id=id)
+    serialized_data = serialize('json', [item])
+    python_data = json.loads(serialized_data)
+    return JsonResponse(python_data[0]['fields'])
+
 def get_list_json_dumps_serializer(request):
     # To make quiz11 easier, we permit reading the list without logging in. :-)
     if not request.user.id:
@@ -60,6 +69,71 @@ def get_list_json_dumps_serializer(request):
     response_json = json.dumps({"posts":response_data, "comments":comments_data})
     return HttpResponse(response_json, content_type='application/json')
 
+@csrf_exempt
+def inventory_add(request, *args, **kwargs):
+    print("entering function")
+    try:
+        data = json.loads(request.body.decode('utf-8'))
+        product_name = data.get('product_name')
+        farmer_name = data.get("farmer_name")
+        quantity = data.get('quantity')
+        expiry_date = data.get('expiry_date')
+
+        # Use get_or_create directly to simplify the code
+        inventory_item, created = InventoryItem.objects.get_or_create(
+            product_name=product_name,
+            farmer_name=farmer_name,
+            defaults={'quantity': quantity, 'expiry_date': expiry_date}
+        )
+
+        # Update timestamp and expiry_date
+        inventory_item.quantity += int(quantity)
+        inventory_item.timestamp = datetime.now()
+        inventory_item.expiry_date = datetime.now()
+        inventory_item.save()
+
+        return JsonResponse({'message': 'Inventory item added successfully'})
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
+
+
+
+@csrf_exempt
+def order_item(request, *args, **kwargs):
+    try:
+        data = json.loads(request.body.decode('utf-8'))
+        product_name = data.get('product_name')
+        farmer_name = data.get("farmer_name")
+        quantity_ordered = data.get('quantity')
+
+        # Retrieve the inventory item
+        inventory_item = InventoryItem.objects.get(product_name=product_name, farmer_name=farmer_name)
+
+        # Check if there is enough quantity to fulfill the order
+        if inventory_item.quantity >= int(quantity_ordered):
+            # Update quantity, timestamp, and expiry_date
+            inventory_item.quantity -= int(quantity_ordered)
+            inventory_item.timestamp = datetime.now()
+            inventory_item.expiry_date = datetime.now()
+            inventory_item.save()
+
+            RequestData.objects.create(
+                product_name=product_name,
+                farmer_name=farmer_name,
+                quantity=int(quantity_ordered)
+            )
+
+            return JsonResponse({'message': 'Order placed successfully'})
+
+        else:
+            return JsonResponse({'error': 'Not enough quantity in inventory'}, status=400)
+
+    except InventoryItem.DoesNotExist:
+        return JsonResponse({'error': 'Item not found in inventory'}, status=404)
+
+    except Exception as e:
+        return JsonResponse({'error': str(e)}, status=500)
 def get_follower_data(request):
     response_data = []
     post_ids = []
@@ -103,9 +177,22 @@ def create_post_item(model_item):
     }
     return my_item
 
+@csrf_exempt
 def request_list(request):
     requests = RequestData.objects.all()
     return render(request, 'socialnetwork/request_list.html', {'requests': requests})
+
+@csrf_exempt
+def inventory_list(request):
+    requests = InventoryItem.objects.all()
+    return render(request, 'socialnetwork/inventory_list.html', {'requests': requests})
+
+
+def get_inventory_list(request):
+    inventory_items = InventoryItem.objects.all()
+    serialized_data = serialize('json', inventory_items)
+    python_data = json.loads(serialized_data)
+    return JsonResponse({'inventory_items': python_data}, safe=False)
 
 
 def _my_json_error_response(message, status=200):

@@ -1,0 +1,40 @@
+{% extends "socialnetwork/base.html" %}
+{% load static %}
+{% block const-header %}
+{% endblock %}
+
+{% block user-info %}
+<div id = "id_page_name">{{id_page_name}}</div>
+<div id = "id_first_name">{{id_first_name}}</div>
+<div id = "id_last_name">{{id_last_name}}</div>
+{% endblock %}
+
+{% block content %}
+<h1>Inventory List</h1>
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Quantity</th>
+            <th>Farmer Name</th>
+            <th>Expiry Date</th>
+            <th>Timestamp Added</th>
+            <th>Product Name</th>
+            <th>Availability</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for request in requests %}
+            <tr>
+                <td>{{ request.id }}</td>
+                <td>{{ request.quantity }}</td>
+                <td>{{ request.farmer_name }}</td>
+                <td>{{ request.expiry_date }}</td>
+                <td>{{ request.timestamp }}</td>
+                <td>{{ request.product_name }}</td>
+                <td>{{ request.availability }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

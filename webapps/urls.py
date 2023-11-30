@@ -17,11 +17,16 @@ from django.contrib import admin
 from django.urls import path
 from socialnetwork import views
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.login_action, name='login'),
     path('register', views.register_action, name='register'),
     path('logout', views.logout_action, name='logout'),
     path('request_list', views.request_list, name='request_list'),
-
+    path('inventory_list', views.inventory_list, name='inventory_list'),
+    path('inventory_add', views.inventory_add, name='inventory_add'),
+    path('order_item', views.order_item, name='order_item'),
+    path('get_inventory_item_by_id/<int:id>/', views.get_inventory_item_by_id, name='get_inventory_item_by_id'),
+    path('get_inventory_list', views.get_inventory_list, name='get_inventory_list'),
 ]
