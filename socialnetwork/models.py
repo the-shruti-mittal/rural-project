@@ -4,8 +4,6 @@ from django.utils import timezone
 import datetime
 
 
-
-
 #availability (bool to 0 when quantity becomes 0)
 #customer requests pictures
 
@@ -41,7 +39,7 @@ class Post(models.Model):
         return 'id = ' + str(self.id) + 'post=' + str(self.text)
 
 
-class RequestData(models.Model):
+class OrderItem(models.Model):
     timestamp = models.DateTimeField(default=timezone.now)
     farmer_name = models.CharField(max_length = 160)
     product_name = models.CharField(max_length = 160)

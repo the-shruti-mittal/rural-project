@@ -12,8 +12,7 @@ from django.utils.decorators import method_decorator
 from django.utils import formats
 from django.http import JsonResponse
 from datetime import datetime
-from socialnetwork.models import Post, Profile, Comment, RequestData, InventoryItem
-from socialnetwork.MyMemoryList import MyMemoryList
+from socialnetwork.models import Post, Profile, Comment, OrderItem, InventoryItem
 import string
 from django.core.exceptions import ObjectDoesNotExist
 from django.core import serializers
@@ -23,7 +22,6 @@ import json
 
 #from celery import Celery
 
-ENTRY_LIST = MyMemoryList()
 # Create your views here.
 def login_action(request):
     context = {}
@@ -98,9 +96,8 @@ def inventory_add(request, *args, **kwargs):
         return JsonResponse({'error': str(e)}, status=500)
 
 
-
 @csrf_exempt
-def order_item(request, *args, **kwargs):
+def order_item(request):
     try:
         data = json.loads(request.body.decode('utf-8'))
         product_name = data.get('product_name')
@@ -118,7 +115,7 @@ def order_item(request, *args, **kwargs):
             inventory_item.expiry_date = datetime.now()
             inventory_item.save()
 
-            RequestData.objects.create(
+            OrderItem.objects.create(
                 product_name=product_name,
                 farmer_name=farmer_name,
                 quantity=int(quantity_ordered)
@@ -133,7 +130,9 @@ def order_item(request, *args, **kwargs):
         return JsonResponse({'error': 'Item not found in inventory'}, status=404)
 
     except Exception as e:
+        print("entering exceptions")
         return JsonResponse({'error': str(e)}, status=500)
+    
 def get_follower_data(request):
     response_data = []
     post_ids = []
@@ -179,7 +178,7 @@ def create_post_item(model_item):
 
 @csrf_exempt
 def request_list(request):
-    requests = RequestData.objects.all()
+    requests = OrderItem.objects.all()
     return render(request, 'socialnetwork/request_list.html', {'requests': requests})
 
 @csrf_exempt
