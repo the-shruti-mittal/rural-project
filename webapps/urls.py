@@ -27,6 +27,9 @@ urlpatterns = [
     path('inventory_list', views.inventory_list, name='inventory_list'),
     path('inventory_add', views.inventory_add, name='inventory_add'),
     path('order_item', views.order_item, name='order_item'),
-    path('get_inventory_item_by_id/<int:id>/', views.get_inventory_item_by_id, name='get_inventory_item_by_id'),
+    path('get_inventory_item_by_ id/<int:id>/', views.get_inventory_item_by_id, name='get_inventory_item_by_id'),
     path('get_inventory_list', views.get_inventory_list, name='get_inventory_list'),
+    path('request_item/<int:inventory_id>/<int:quantity>', views.request_item, name='request_item'),
+    path('request_order_status/<int:order_item_id>/', views.request_order_status, name='request_order_status'),
+    path('request_item_photo/<int:inventory_id>/', views.request_item_photo, name='request_item_photo'),
 ]

@@ -14,6 +14,7 @@
 <table>
     <thead>
         <tr>
+            <th>Id</th>
             <th>Quantity</th>
             <th>Farmer Name</th>
             <th>Expiry Date</th>
@@ -25,6 +26,7 @@
     <tbody>
         {% for request in requests %}
             <tr>
+                <td>{{ request.id }}</td>
                 <td>{{ request.quantity }}</td>
                 <td>{{ request.farmer_name }}</td>
                 <td>{{ request.expiry_date }}</td>
